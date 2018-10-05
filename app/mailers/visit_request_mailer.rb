@@ -13,11 +13,10 @@ class VisitRequestMailer < ApplicationMailer
     @visit_request = visit_request
     @event         = @visit_request.event
     @user          = @visit_request.user
+    @venue         = @event.venue
 
     attachments['event.ics'] = Event::ExportToIcal.call(@event)
-    mail(subject: email_template.subject, to: @user.email) do |format|
-      format.html { email_template.render(visit_request: @visit_request, user: @user, event: @event) }
-    end
+    mail(subject: email_template.subject, to: @user.email)
   end
 
   def needs_confirmation(visit_request)
