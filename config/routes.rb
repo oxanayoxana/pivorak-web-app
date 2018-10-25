@@ -42,9 +42,10 @@ Rails.application.routes.draw do
     resources :events,  except: %i[show destroy] do
       resources :visit_requests, only: %i[index] do
         collection do
-          post :send_confirmations, to: 'visit_request/send_confirmations#create'
-          post :import,             to: 'visit_request/import#create'
-          get  :report,             to: 'visit_request/report#download'
+          resource :send_confirmations, only: %i[new create], controller: 'visit_request/send_confirmations'
+          post :send_final_confirmations, to: 'visit_request/send_final_confirmations#create'
+          post :import,                   to: 'visit_request/import#create'
+          get  :report,                   to: 'visit_request/report#download'
         end
 
         put  :approve,      to: 'visit_request/approve#update'
